@@ -100,9 +100,26 @@ GAME.appendChild(rock)
  * Finally, alert "YOU LOSE!" to the player.
  */
 function endGame() {
+  clearInterval(gameInterval)
+  ROCKS.forEach(function(rock) {rock.remove()})
+  window.removeEventListener('keydown', moveDodger)
+
+  return alert('YOU LOSE!')
 }
 
 function moveDodger(e) {
+  const keyPressed = e.which
+  if (keyPressed === LEFT_ARROW || keyPressed === RIGHT_ARROW) {
+    e.preventDefault()
+    e.stopPropagation()
+  }
+
+  if (keyPressed === LEFT_ARROW) {
+    moveDodgerLeft(e)
+  }
+  if (keyPressed === RIGHT_ARROW) {
+    moveDodgerRight(e)
+  }
   // implement me!
   /**
    * This function should call `moveDodgerLeft()`
@@ -114,20 +131,34 @@ function moveDodger(e) {
 }
 
 function moveDodgerLeft() {
+  window.requestAnimationFrame(function() {
+    const left = positionToInteger(DODGER.style.left)
+
+    if (left > 0) {
+      DODGER.style.left = `$(left - 4)px`
+    }
+  })
+}
   // implement me!
   /**
    * This function should move DODGER to the left
    * (mabye 4 pixels?). Use window.requestAnimationFrame()!
    */
-}
 
 function moveDodgerRight() {
+  window.requestAnimationFrame(function(){
+    const left = positionToInteger(DODGER.style.left)
+
+    if (left < 360) {
+      DODGER.style.left = `$(left + 4)px`
+    }
+  })
+}
   // implement me!
   /**
    * This function should move DODGER to the right
    * (mabye 4 pixels?). Use window.requestAnimationFrame()!
    */
-}
 
 /**
  * @param {string} p The position property
